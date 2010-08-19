@@ -1,6 +1,50 @@
 = mail_processor
 
-Description goes here.
+Is a convenience processor for incoming mails. Pop3 and MailDir 
+is supported at the moment. The mail is deleted after it is processed.
+
+
+== Usage
+
+=== MailDir
+
+ processor = Processor.new do
+   retriever :mail_dir do
+     glob "#{ENV['HOME']}/MailDir/new/*"
+   end
+ end
+
+ # Process all mails in the directory 
+ processor.process do |popped|
+   # Popped is raw mail data, which may be fed
+   # to the 'mail' gem for further processing
+   puts popped
+ end
+
+
+=== Pop3
+
+ processor = Processor.new do
+   retriever :pop3 do
+     address "pop.example.com"
+     username "test@example.com"
+     password "**SECRET**"
+   end
+ end
+
+ # Process all mails in the queue
+ processor.process do |popped|
+   # Popped is raw mail data, which may be fed
+   # to the 'mail' gem for further processing
+   puts popped
+ end
+
+
+== Feature / problems
+
+Mails are automatically deleted from the server/directory after 
+they are processed.
+
 
 == Note on Patches/Pull Requests
  
