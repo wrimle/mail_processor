@@ -23,6 +23,17 @@ module MailProcessor
     end
   end
 
+
+
+  # Symbolizes keys from yaml hashes while merging
+  def merge_to_attributes other
+    h = @attributes
+    other.each do |k, v|
+      h[k.to_sym] = v
+    end
+    self
+  end
+
 end
 
 
@@ -34,3 +45,4 @@ class File
     content
   end
 end
+

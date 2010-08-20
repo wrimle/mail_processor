@@ -27,7 +27,9 @@ module MailProcessor
         :password => nil,
         # Must have ruby 1.9 to use this
         :use_ssl => false, # true 
-      }.merge(options)
+      }
+      merge_to_attributes(options)
+
       instance_eval &block if block_given?
       self
     end

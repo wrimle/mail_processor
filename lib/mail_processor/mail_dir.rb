@@ -21,7 +21,8 @@ module MailProcessor
     def initialize options = {}, &block
       @attributes = {
         :glob => "#{ENV['HOME']}/MailDir/new/*",
-      }.merge(options)
+      }
+      merge_to_attributes(options)
       instance_eval &block if block_given?
     end
 
