@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
 
-require 'rubygems'
-require 'log4r'
 
-include Log4r
 include MailProcessor
-
-class File
-  def self.read_binary filename
-    f = File.new(filename, "rb")
-    content = f.read()
-    f.close()
-    content
-  end
-end
 
 module MailProcessor
 
-  class MailDir
-    def initialize options = {}, &block
-      @log = Logger.new self.class.to_s
-      @log.outputters = Outputter.stdout
+  class MailDir < Base
+    begin
+      @log = Log4r::Logger.new self.to_s
+    end
 
+    def self.log
+      @log
+    end
+
+    def log
+      self.class.log
+    end
+
+    def initialize options = {}, &block
       @attributes = {
         :glob => "#{ENV['HOME']}/MailDir/new/*",
       }.merge(options)
@@ -47,7 +44,7 @@ module MailProcessor
         FileUtils::rm(filename)
         count += 1
       end
-      @log.info "Processed #{count} mails"
+      log.info "Processed #{count} mails"
 
       count == 0
     end

@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
 
 require 'net/pop'
-require 'rubygems'
-require 'log4r'
 
 include MailProcessor
 
 module MailProcessor
 
-  class Pop3
-    def initialize options = {}, &block
-      @log = Logger.new self.class.to_s
-      @log.outputters = Outputter.stdout
+  class Pop3 < Base
+    begin
+      @log = Log4r::Logger.new self.to_s
+    end
 
+    def self.log
+      @log
+    end
+
+    def log
+      self.class.log
+    end
+
+    def initialize options = {}, &block
       @attributes = {
         :address => "pop.gmail.com",
         :port => 110, # 995,
@@ -84,13 +91,13 @@ module MailProcessor
       pop = Net::POP3.new(a[:address], a[:port])
       pop.start(a[:username], a[:password])
       if pop.mails.empty?
-        @log.info 'No mail.'
+        log.info 'No mail.'
       else
         pop.each_mail do |m|
           yield m.pop
           m.delete
         end
-        @log.info "Processed #{pop.mails.size} mails."
+        log.info "Processed #{pop.mails.size} mails."
         pop.finish
         didWork = true
       end

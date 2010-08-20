@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
+include MailProcessor
+
 module MailProcessor
-  class UnkownRetrieverError < StandardError; end
-
-
-  class Processor
+  class Processor < Base
     def initialize options = {}, &block
       @attributes = {
         :retriever => nil
@@ -19,7 +18,7 @@ module MailProcessor
                    when :pop3 then
                      Pop3.new options, &block
                    when :mail_dir then
-                     @retriever = MailDir.new options, &block
+                     MailDir.new options, &block
                    else
                      raise UnkownRetrieverError, "Retriever type #{method.to_s} not known"
                    end
