@@ -7,18 +7,6 @@ include MailProcessor
 module MailProcessor
 
   class Pop3 < Base
-    begin
-      @log = Log4r::Logger.new self.to_s
-    end
-
-    def self.log
-      @log
-    end
-
-    def log
-      self.class.log
-    end
-
     def initialize options = {}, &block
       @attributes = {
         :address => "pop.gmail.com",

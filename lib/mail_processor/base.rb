@@ -10,12 +10,9 @@ module MailProcessor
   log.outputters = Log4r::Outputter.stdout
 
   class Base
-    begin
-      @log = Log4r::Logger.new "MailProcessor::#{self.to_s}"
-    end
-
     def self.log
-      @log
+      #Log4r::Logger["#{self.to_s}"]  || Log4r::Logger.new("#{self.to_s}")
+      Log4r::Logger["MailProcessor"]
     end
 
     def log
