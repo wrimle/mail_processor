@@ -88,9 +88,9 @@ module MailProcessor
           m.delete
         end
         log.info "Processed #{pop.mails.size} mails."
-        pop.finish
         didWork = true
       end
+      pop.finish
 
       didWork
     end
